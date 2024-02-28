@@ -1,27 +1,6 @@
 class World {
     character = new Character();
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken()
-    ];
-    clouds = [ 
-        new Cloud()
-    ];
-    backgroundObjects = [
-        new BackgroundObject('../img/5_background/layers/air.png', -1439),
-        new BackgroundObject('../img/5_background/layers/3_third_layer/full.png', -1439),
-        new BackgroundObject('../img/5_background/layers/2_second_layer/full.png', -1439),
-        new BackgroundObject('../img/5_background/layers/1_first_layer/full.png', -1439),
-        new BackgroundObject('../img/5_background/layers/air.png', 0),
-        new BackgroundObject('../img/5_background/layers/3_third_layer/full.png', 0),
-        new BackgroundObject('../img/5_background/layers/2_second_layer/full.png', 0),
-        new BackgroundObject('../img/5_background/layers/1_first_layer/full.png', 0),
-        new BackgroundObject('../img/5_background/layers/air.png', 1439),
-        new BackgroundObject('../img/5_background/layers/3_third_layer/full.png', 1439),
-        new BackgroundObject('../img/5_background/layers/2_second_layer/full.png', 1439),
-        new BackgroundObject('../img/5_background/layers/1_first_layer/full.png', 1439)
-    ]
+    level = level1;
     canvas;
     ctx;
     keyboard;
@@ -44,11 +23,11 @@ class World {
 
         this.ctx.translate(this.cameraX, 0);
 
-        this.addObjectsToMap(this.backgroundObjects);
+        this.addObjectsToMap(this.level.backgroundObjects);
 
-        this.addObjectsToMap(this.clouds);
+        this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.level.enemies);
 
         this.ctx.translate(-this.cameraX, 0);
 
@@ -59,14 +38,14 @@ class World {
     }
 
     addToMap(mo) {
-        if(mo.otherDirection) {
+        if (mo.otherDirection) {
             this.ctx.save();
             this.ctx.translate(mo.width, 0);
             this.ctx.scale(-1, 1);
             mo.x = mo.x * -1;
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-        if(mo.otherDirection) {
+        if (mo.otherDirection) {
             mo.x = mo.x * -1;
             this.ctx.restore();
         }
