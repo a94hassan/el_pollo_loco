@@ -27,6 +27,16 @@ class DrawableObject {
         }
     }
 
+    drawCollisonFrame(ctx) {
+        if (this instanceof Character) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'red';
+            ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.width - (this.offset.right + this.offset.left), this.height - (this.offset.bottom + this.offset.top));
+            ctx.stroke();
+        }
+    }
+
     loadImages(array) {
         array.forEach((path) => {
             let img = new Image();
