@@ -17,11 +17,22 @@ class Chicken extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        let moveIntervalId = setInterval(() => {
+            if (this.isDead()) {
+                clearInterval(moveIntervalId);
+            } else {
             this.moveLeft();
+            }
         }, 1000 / 60);
-        setInterval(() => {
+        intervalIds.push(moveIntervalId);
+        let animationIntervalId = setInterval(() => {
+            if (this.isDead()) {
+                clearInterval(animationIntervalId);
+                this.loadImage('../img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
+            } else {
             this.playAnimation(this.walkingImages);
+            }
         }, 100);
+        intervalIds.push(animationIntervalId);
     }
 }

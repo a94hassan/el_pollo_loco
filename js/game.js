@@ -34,3 +34,4 @@ window.addEventListener('keyup', (event) => {
         keyboard.SPACE = false;
     }
 });
+

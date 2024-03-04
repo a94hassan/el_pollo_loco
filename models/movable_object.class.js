@@ -13,8 +13,8 @@ class MovableObject extends DrawableObject {
     };
 
     applyGravity() {
-        setInterval (() => {
-            if(this.isAboveGround() || this.speedY > 0) {
+        setStoppableInterval (() => {
+            if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
@@ -23,7 +23,7 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return true
+            return true;
         } else {
             return this.y < 135;
         }
@@ -36,6 +36,19 @@ class MovableObject extends DrawableObject {
                 this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
+    isStomping(mo, prevY) {
+        // Überprüfen, ob die obere Kante des Charakters unter der oberen Kante des Gegners liegt
+        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top &&
+                                this.y > prevY; // Überprüfen, ob der Charakter sich nach unten bewegt
+    
+        // Überprüfen, ob die horizontalen Bereiche sich überschneiden
+        let horizontalOverlap = this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+                                this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
+    
+        // Rückgabe, ob beide Bedingungen erfüllt sind
+        return stompingCondition && horizontalOverlap;
+    }
+
     hit() {
         this.energy -= 5;
         if (this.energy < 0) {
@@ -43,6 +56,10 @@ class MovableObject extends DrawableObject {
         } else {
             this.lastHit = new Date().getTime();
         }
+    }
+
+    isIdle() {
+        return this.world.keyboard.LEFT == false && this.world.keyboard.RIGHT == false && this.world.keyboard.UP == false && this.world.keyboard.SPACE == false && !this.isAboveGround() && !this.isDead() && !this.isHurt();
     }
 
     isHurt() {

@@ -22,9 +22,12 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        let prevY = this.character.y; // Speichern der Anfangsposition
+        setStoppableInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkStomping(prevY); // Übergeben von prevY
+            prevY = this.character.y; // Aktualisieren der vorherigen Position
         }, 200);
     }
 
@@ -37,13 +40,23 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                console.log('Collision with Character ', this.character.energy);
+            if (this.character.isColliding(enemy) && !enemy.isDead()) {
+                console.log(`Collision with Character - Remaining energy:  ${this.character.energy}`);
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
     }
+
+    checkStomping(prevY) {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isStomping(enemy, prevY) && !enemy.isDead()) { // Übergeben von prevY
+                console.log('Character is Stomping');
+                enemy.energy = 0;
+            }
+        });
+    }
+    
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -103,4 +116,5 @@ class World {
             this.addToMap(o);
         });
     }
+
 }
