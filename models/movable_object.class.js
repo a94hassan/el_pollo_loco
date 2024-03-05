@@ -37,15 +37,8 @@ class MovableObject extends DrawableObject {
     }
 
     isStomping(mo, prevY) {
-        // Überprüfen, ob die obere Kante des Charakters unter der oberen Kante des Gegners liegt
-        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top &&
-                                this.y > prevY; // Überprüfen, ob der Charakter sich nach unten bewegt
-    
-        // Überprüfen, ob die horizontalen Bereiche sich überschneiden
-        let horizontalOverlap = this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-                                this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
-    
-        // Rückgabe, ob beide Bedingungen erfüllt sind
+        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top && this.y > prevY; 
+        let horizontalOverlap = this.x + this.width - this.offset.right > mo.x + mo.offset.left && this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
         return stompingCondition && horizontalOverlap;
     }
 

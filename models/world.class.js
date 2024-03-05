@@ -26,14 +26,16 @@ class World {
         setStoppableInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkHitting();
             this.checkStomping(prevY); // Übergeben von prevY
             prevY = this.character.y; // Aktualisieren der vorherigen Position
         }, 200);
     }
 
     checkThrowObjects() {
-        if(this.keyboard.DOWN) {
-            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100)
+        if (this.keyboard.DOWN) {
+            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100);
+            bottle.world = this;
             this.throwableObjects.push(bottle);
         }
     }
@@ -51,13 +53,26 @@ class World {
     checkStomping(prevY) {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isStomping(enemy, prevY) && !enemy.isDead()) { // Übergeben von prevY
-                console.log('Character is Stomping');
+                new Audio('../audio/stomp.mp3').play();
                 enemy.energy = 0;
             }
         });
     }
-    
 
+    checkHitting() {
+        this.throwableObjects.forEach((bottle, i) => {
+            this.level.enemies.forEach((enemy) => {
+                if (bottle.isColliding(enemy) && !enemy.isDead()) {
+                    bottle.hitEnemy = true;
+                    enemy.energy = 0;
+                    setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
+                } else if (bottle.hitGround()) {
+                    setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
+                }
+            });
+        });
+    }
+    
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
