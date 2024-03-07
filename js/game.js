@@ -35,3 +35,21 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
+function openDialog() {
+    document.getElementById('dialog_bg').style.display = 'block';
+    document.getElementById('dialog').style.display = 'flex';
+}
+
+function closeDialog() {
+    document.getElementById('dialog_bg').style.display = 'none';
+    document.getElementById('dialog').style.display = 'none';
+}
+
+function toggleSound() {
+    let soundControl = document.getElementById('soundControl');
+    if (soundControl.checked) {
+        world.muteAllSounds();
+    } else {
+        world.unmuteAllSounds();
+    }
+}

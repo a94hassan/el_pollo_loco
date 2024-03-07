@@ -29,12 +29,52 @@
     <script src="./js/game.js"></script>
 </head>
 <body onload="init()">
-
-    <h1>EL POLLO LOCO</h1>
-
-    <canvas id="canvas" width="720" height="480">
-
-    </canvas>
-
+    <div id="content">
+        <div id="top">
+            <h1>EL POLLO LOCO</h1>
+        </div>
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <div id="bottom">
+            <button onclick="openDialog()">SETTINGS <img src="./img/settings_icon.png" alt="settings icon"></button>
+        </div>
+    </div>
+    <div id="dialog_bg" onclick="closeDialog()">
+        <div id="dialog">
+            <div class="dialog_top">
+                <div>
+                    <span>FULLSCREEN MODE</span>
+                    <input type="checkbox">
+                </div>
+                <div>
+                    <span>MUTE SOUNDS</span>
+                    <input type="checkbox" id="soundControl" onchange="toggleSound()">
+                </div>
+            </div>
+            <div class="partingLine"></div>
+            <div class="dialog_bottom">
+                <table>
+                    <th>
+                        KEYBINDS
+                    </th>
+                    <tr>
+                        <td>Left</td>
+                        <td>A / ArrowLeft</td>
+                    </tr>
+                    <tr>
+                        <td>Right</td>
+                        <td>D / ArrowRight</td>
+                    </tr>                    
+                    <tr>
+                        <td>Jump</td>
+                        <td>W / ArrowUp / Space</td>
+                    </tr>                    
+                    <tr>
+                        <td>Throw</td>
+                        <td>S / ArrowDown</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

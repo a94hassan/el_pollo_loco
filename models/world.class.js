@@ -74,7 +74,7 @@ class World {
     checkStomping(prevY) {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isStomping(enemy, prevY) && !enemy.isDead()) { // Übergeben von prevY
-                new Audio('../audio/stomp.mp3').play();
+                this.character.stompSound.play();
                 enemy.energy = 0;
             }
         });
@@ -217,5 +217,23 @@ class World {
         } else if (this.character.x > this.level.levelEndX) {
             this.character.x = this.level.levelEndX;
         }
+    }
+
+    muteAllSounds() {
+        this.character.walkingSound.muted = true;
+        this.character.jumpSound.muted = true;
+        this.character.jumpVocal.muted = true;
+        this.character.stompSound.muted = true;
+        this.character.hurtVocal.muted = true;
+        this.character.deadVocal.muted = true;
+    }
+    
+    unmuteAllSounds() {
+        this.character.walkingSound.muted = false;
+        this.character.jumpSound.muted = false;
+        this.character.jumpVocal.muted = false;
+        this.character.stompSound.muted = false;
+        this.character.hurtVocal.muted = false;
+        this.character.deadVocal.muted = false;
     }
 }

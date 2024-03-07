@@ -1,9 +1,161 @@
 body {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    background-image: url(/img/background.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    font-family: 'Dimbo', Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+    font-family: 'Dimbo';
+    src: url('/fonts/Dimbo\ Regular.ttf') format('truetype');
+}
+
+#content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+#top {
+    border: 2px dotted red;
+    height: 64px;
+    font-size: 32px;
+    letter-spacing: 4px;
+    color: white;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin-bottom: 16px;
+}
+
+#top h1 {
+    margin: 0;
+}
+
+#bottom {
+    border: 2px dotted blue;
+    height: 64px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bottom button {
+    font-family: 'Dimbo', Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 24px;
+    transition: all ease-in-out 125ms;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+#bottom button:hover {
+    scale: 0.98;
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+#bottom img {
+    height: 24px;
 }
 
 canvas {
     background-color: black;
+}
+
+#dialog_bg {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+    display: none;
+}
+
+#dialog {
+    box-sizing: border-box;
+    width: 880px;
+    height: 560px;
+    background: transparent;
+    background-image: url(/img/old_paper.png);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    padding: 32px 160px;
+    font-size: 32px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dialog_top {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px 0px;
+}
+
+.dialog_top div {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    outline: none;
+    background-image: url('/img/checkbox.png');
+    background-size: 32px 32px;
+}
+
+input[type="checkbox"]:checked {
+    background-image: url('/img/checkbox_checked.png'); /* Bild für die markierte Checkbox */
+}
+
+.partingLine {
+    height: 2px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dialog_bottom {
+    padding: 32px 0px;
+}
+
+.dialog_bottom table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dialog_bottom th {
+    font-weight: unset;
+    text-align: left;
+    padding-bottom: 16px;
+}
+
+.dialog_bottom td {
+    width: 50%;
+    height: 48px;
+    text-align: center;
+}
+
+.dialog_bottom tr:nth-child(even){
+    background-color: rgba(0, 0, 0, 0.1);
 }

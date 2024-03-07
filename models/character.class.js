@@ -47,6 +47,7 @@ class Character extends MovableObject {
     walkingSound = new Audio('../audio/walking.mp3');
     jumpSound = new Audio('../audio/jump_sfx.mp3');
     jumpVocal = new Audio('../audio/jump5.mp3');
+    stompSound = new Audio('../audio/stomp.mp3');
     hurtVocal = new Audio('../audio/hurt4.mp3');
     deadVocal = new Audio('../audio/dead.mp3');
 
