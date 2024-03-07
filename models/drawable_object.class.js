@@ -37,6 +37,15 @@ class DrawableObject {
         }
     }
 
+    drawPartingLine(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '5';
+        ctx.strokeStyle = 'red';
+        ctx.moveTo(3200, 0); // Startpunkt oben
+        ctx.lineTo(3200, 480); // Endpunkt unten
+        ctx.stroke();
+    }
+
     loadImages(array) {
         array.forEach((path) => {
             let img = new Image();

@@ -57,6 +57,7 @@ class Character extends MovableObject {
         bottom: 30
     };
 
+
     constructor() {
         super().loadImage('../img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.walkingImages);
@@ -74,14 +75,14 @@ class Character extends MovableObject {
                 stopGame();
                 alert('GAME OVER!');
             } else {
-                if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX && !this.isHurt()) {
                     this.moveRight();
                     this.otherDirection = false;
-                } else if (this.world.keyboard.LEFT && this.x > + 100) {
+                } else if (this.world.keyboard.LEFT && this.x > + 100 && !this.isHurt()) {
                     this.moveLeft();
                     this.otherDirection = true;
                 }
-                if ((this.world.keyboard.UP || this.world.keyboard.SPACE) && !this.isAboveGround()) {
+                if ((this.world.keyboard.UP || this.world.keyboard.SPACE) && !this.isAboveGround() && !this.isHurt()) {
                     this.jump();
                     this.jumpSound.play();
                     this.jumpVocal.play();
@@ -96,25 +97,25 @@ class Character extends MovableObject {
                 this.playAnimation(this.deadImages);
                 this.walkingSound.pause();
                 this.deadVocal.play();
-                newAnimationIndex = 1; 
+                newAnimationIndex = 0; 
             } else {
                 if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.isHurt()) {
                     this.playAnimation(this.walkingImages);
                     this.walkingSound.play();
-                    newAnimationIndex = 3; 
+                    newAnimationIndex = 1; 
                 } else if (this.isIdle()) {
                     this.loadImage('../img/2_character_pepe/1_idle/idle/I-1.png');
                     this.walkingSound.pause();
-                    newAnimationIndex = 4;
+                    newAnimationIndex = 2;
                 } else if (this.isAboveGround() && !this.isHurt()) {
                     this.playAnimation(this.jumpingImages);
                     this.walkingSound.pause();
-                    newAnimationIndex = 2;
+                    newAnimationIndex = 3;
                 } else if (this.isHurt()) {
                     this.playAnimation(this.hurtImages);
                     this.walkingSound.pause();
                     // this.hurtVocal.play();
-                    newAnimationIndex = 0; 
+                    newAnimationIndex = 4; 
                 }
             }
             if (newAnimationIndex !== currentAnimationIndex) {

@@ -51,6 +51,29 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    knockback(index) {
+        this.speedY = 10;
+        let prevX = this.x;
+        let intervalId = setInterval(() => {
+            let condition = this.checkKnockback(index, prevX); // Überprüfen Sie die Bedingung
+            if (condition > 200) {
+                this.speedY = 0;
+                clearInterval(intervalId);
+            }
+        }, 25);
+        intervalIds.push(intervalId);
+    }
+    
+    checkKnockback(index, prevX) {
+        if (index == 'left') {
+            this.x -= 10;
+            return prevX - this.x;
+        } else if (index == 'right') {
+            this.x += 10;
+            return this.x - prevX;
+        }
+    }
+
     isIdle() {
         return this.world.keyboard.LEFT == false && this.world.keyboard.RIGHT == false && this.world.keyboard.UP == false && this.world.keyboard.SPACE == false && !this.isAboveGround() && !this.isDead() && !this.isHurt();
     }
@@ -82,5 +105,9 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 25;
+    }
+
+    firstEncounter() {
+        return this.x + this.width > 3200;
     }
 }

@@ -6,7 +6,9 @@ class World {
     keyboard;
     cameraX = 0;
     statusBar = new StatusBar();
+    statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
+    firstEncounter = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -24,10 +26,13 @@ class World {
     run() {
         let prevY = this.character.y; // Speichern der Anfangsposition
         setStoppableInterval(() => {
+            this.xLimiter();
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkHitting();
             this.checkStomping(prevY); // Übergeben von prevY
+            this.checkFirstEncounter();
+            this.checkEndBossPosition();
             prevY = this.character.y; // Aktualisieren der vorherigen Position
         }, 200);
     }
@@ -46,6 +51,11 @@ class World {
                 console.log(`Collision with Character - Remaining energy:  ${this.character.energy}`);
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
+                if (this.character.x > 300 && this.character.x + this.character.width - this.character.offset.right > enemy.x + enemy.offset.left && this.character.x + this.character.width - this.character.offset.right < enemy.x + enemy.width - enemy.offset.right) {
+                    this.character.knockback('left');
+                } else if (this.character.x < this.level.levelEndX - 200 && this.character.x + this.character.offset.left < enemy.x + enemy.width - enemy.offset.right && this.character.x + this.character.offset.left > enemy.x + enemy.offset.left) {
+                    this.character.knockback('right');
+                }
             }
         });
     }
@@ -64,12 +74,42 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy) && !enemy.isDead()) {
                     bottle.hitEnemy = true;
-                    enemy.energy = 0;
+                    enemy.energy -= 100;
                     setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
+                    if (enemy instanceof Endboss) {
+                        this.statusBarEndboss.setPercentage(enemy.energy);
+                        enemy.isHurt = true;
+                        console.log(enemy.energy);
+                    }
                 } else if (bottle.hitGround()) {
                     setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
                 }
             });
+        });
+    }
+
+    checkFirstEncounter() {
+        if (this.character.firstEncounter()) {
+            this.level.enemies.forEach((enemy) => {
+                if (enemy instanceof Endboss) {
+                    enemy.firstEncounter = true;
+                    this.firstEncounter = true;
+                }
+            });
+        }
+    }
+
+    checkEndBossPosition() {
+        this.level.enemies.forEach((enemy) => {
+            if (enemy.firstEncounter) {
+                if (enemy instanceof Endboss) {
+                    if (enemy.x < this.character.x + this.character.width - this.character.offset.right) {
+                        enemy.otherDirection = true;
+                    } else if (enemy.x > Math.abs(this.cameraX) + 720) {
+                        enemy.otherDirection = false;
+                    }
+                }
+            }
         });
     }
     
@@ -83,6 +123,9 @@ class World {
         // -----------------------------------START Space for fixed Objects-----------------------------------
 
         this.addToMap(this.statusBar);
+        if (this.firstEncounter) {
+            this.addToMap(this.statusBarEndboss);
+        }
 
         // ------------------------------------END Space for fixed Objects------------------------------------
         this.ctx.translate(this.cameraX, 0);
@@ -108,6 +151,7 @@ class World {
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
         mo.drawCollisonFrame(this.ctx);
+        mo.drawPartingLine(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -132,4 +176,11 @@ class World {
         });
     }
 
+    xLimiter() {
+        if (this.character.x < 100) {
+            this.character.x = 100;
+        } else if (this.character.x > this.level.levelEndX) {
+            this.character.x = this.level.levelEndX;
+        }
+    }
 }
