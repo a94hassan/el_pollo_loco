@@ -7,8 +7,12 @@ class World {
     cameraX = 0;
     statusBar = new StatusBar();
     statusBarEndboss = new StatusBarEndboss();
+    bottleBar = new BottleBar();
+    coinBar = new CoinBar();
     throwableObjects = [];
     firstEncounter = false;
+    collectedBottles = 0;
+    collectedCoins = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -33,15 +37,21 @@ class World {
             this.checkStomping(prevY); // Übergeben von prevY
             this.checkFirstEncounter();
             this.checkEndBossPosition();
+            this.checkBottleCollecting();
+            this.checkCoinCollecting();
             prevY = this.character.y; // Aktualisieren der vorherigen Position
         }, 200);
     }
 
     checkThrowObjects() {
-        if (this.keyboard.DOWN) {
+        if (this.keyboard.DOWN && this.collectedBottles > 0) {
             let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100);
             bottle.world = this;
             this.throwableObjects.push(bottle);
+            this.collectedBottles--;
+            this.bottleBar.setAmount(this.collectedBottles);
+            console.log(this.collectedBottles);
+            console.log(this.throwableObjects);
         }
     }
 
@@ -51,6 +61,7 @@ class World {
                 console.log(`Collision with Character - Remaining energy:  ${this.character.energy}`);
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
+                console.log(this.character.energy);
                 if (this.character.x > 300 && this.character.x + this.character.width - this.character.offset.right > enemy.x + enemy.offset.left && this.character.x + this.character.width - this.character.offset.right < enemy.x + enemy.width - enemy.offset.right) {
                     this.character.knockback('left');
                 } else if (this.character.x < this.level.levelEndX - 200 && this.character.x + this.character.offset.left < enemy.x + enemy.width - enemy.offset.right && this.character.x + this.character.offset.left > enemy.x + enemy.offset.left) {
@@ -88,6 +99,27 @@ class World {
         });
     }
 
+    checkBottleCollecting() {
+        this.level.bottles.forEach((bottle, i) => {
+            if (this.character.isColliding(bottle)) {
+                this.collectedBottles++;
+                this.level.bottles.splice(i, 1);
+                this.bottleBar.setAmount(this.collectedBottles);
+                console.log(this.collectedBottles);
+            }
+        })
+    }
+
+    checkCoinCollecting() {
+        this.level.coins.forEach((coin, i) => {
+            if (this.character.isColliding(coin)) {
+                this.collectedCoins++;
+                this.level.coins.splice(i, 1);
+                this.coinBar.setAmount(this.collectedCoins);
+            }
+        })
+    }
+
     checkFirstEncounter() {
         if (this.character.firstEncounter()) {
             this.level.enemies.forEach((enemy) => {
@@ -118,6 +150,7 @@ class World {
 
         this.ctx.translate(this.cameraX, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
 
         this.ctx.translate(-this.cameraX, 0);
         // -----------------------------------START Space for fixed Objects-----------------------------------
@@ -126,14 +159,16 @@ class World {
         if (this.firstEncounter) {
             this.addToMap(this.statusBarEndboss);
         }
+        this.addToMap(this.bottleBar);
+        this.addToMap(this.coinBar);
 
         // ------------------------------------END Space for fixed Objects------------------------------------
         this.ctx.translate(this.cameraX, 0);
 
-
         this.addToMap(this.character);
-        this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.cameraX, 0);

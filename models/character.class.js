@@ -72,8 +72,10 @@ class Character extends MovableObject {
         let currentAnimationIndex = - 1;
         setStoppableInterval(() => {
             if (this.isDead()) {
-                stopGame();
-                alert('GAME OVER!');
+                setTimeout(() => {
+                    stopGame();
+                    console.log('GAME OVER!');
+                }, 400);
             } else {
                 if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX && !this.isHurt()) {
                     this.moveRight();
