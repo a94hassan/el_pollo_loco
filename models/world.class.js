@@ -45,8 +45,7 @@ class World {
 
     checkThrowObjects() {
         if (this.keyboard.DOWN && this.collectedBottles > 0) {
-            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100);
-            bottle.world = this;
+            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100, this);
             this.throwableObjects.push(bottle);
             this.collectedBottles--;
             this.bottleBar.setAmount(this.collectedBottles);
@@ -184,9 +183,6 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
-        mo.drawCollisonFrame(this.ctx);
-        mo.drawPartingLine(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);

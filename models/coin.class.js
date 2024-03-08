@@ -11,13 +11,13 @@ class Coin extends CollectableObject {
     };
 
     coinImages = [
-        '../img/8_coin/coin_1.png',
-        '../img/8_coin/coin_2.png'
+        './img/8_coin/coin_1.png',
+        './img/8_coin/coin_2.png'
     ];
     
     constructor() {
         super();
-        this.loadImage('../img/8_coin/coin_1.png');
+        this.loadImage('./img/8_coin/coin_1.png');
         this.loadImages(this.coinImages);
         this.animate();
     }

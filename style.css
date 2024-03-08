@@ -3,15 +3,16 @@ body {
     width: 100%;
     margin: 0;
     box-sizing: border-box;
-    background-image: url(/img/background.jpg);
-    background-size: 100% 100%;
+    background-image: url(./img/background.jpg);
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     font-family: 'Dimbo', Arial, Helvetica, sans-serif;
 }
 
 @font-face {
     font-family: 'Dimbo';
-    src: url('/fonts/Dimbo\ Regular.ttf') format('truetype');
+    src: url('./fonts/Dimbo\ Regular.ttf') format('truetype');
 }
 
 #content {
@@ -23,7 +24,6 @@ body {
 }
 
 #top {
-    border: 2px dotted red;
     height: 64px;
     font-size: 32px;
     letter-spacing: 4px;
@@ -39,7 +39,6 @@ body {
 }
 
 #bottom {
-    border: 2px dotted blue;
     height: 64px;
     margin-top: 16px;
     display: flex;
@@ -47,23 +46,69 @@ body {
     align-items: center;
 }
 
-#bottom button {
+#settings_button {
     font-family: 'Dimbo', Arial, Helvetica, sans-serif;
     font-size: 32px;
     border: none;
     border-radius: 8px;
     padding: 8px 24px;
     transition: all ease-in-out 125ms;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     gap: 8px;
 }
 
-#bottom button:hover {
-    scale: 0.98;
+#settings_button:hover {
+    scale: 0.95;
     cursor: pointer;
-    border: 2px solid black;
+    border: 3px solid black;
+}
+
+#start_button {
+    font-family: 'Dimbo', Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    background: radial-gradient(circle, rgba(255,160,0,1) 0%, rgba(255,222,1,1) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 24px;
+    transition: all ease-in-out 125ms;
+    border: 3px solid white;
+}
+
+#start_button:hover {
+    scale: 0.95;
+    cursor: pointer;
+    animation: tilt-n-move-shaking 0.25s infinite;
+}
+
+#restart_button {
+    font-family: 'Dimbo', Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    background: radial-gradient(circle, rgba(255,160,0,1) 0%, rgba(255,222,1,1) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 24px;
+    transition: all ease-in-out 125ms;
+    border: 3px solid white;
+    display: none;
+}
+
+#restart_button:hover {
+    scale: 0.95;
+    cursor: pointer;
+    animation: tilt-n-move-shaking 0.25s infinite;
+}
+
+
+@keyframes tilt-n-move-shaking {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(5px, 5px) rotate(5deg); }
+    50% { transform: translate(0, 0) rotate(0eg); }
+    75% { transform: translate(-5px, 5px) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
 }
 
 #bottom img {
@@ -72,6 +117,7 @@ body {
 
 canvas {
     background-color: black;
+    display: block;
 }
 
 #dialog_bg {
@@ -79,7 +125,7 @@ canvas {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     position: relative;
-    z-index: 2;
+    z-index: 3;
     display: none;
 }
 
@@ -88,12 +134,12 @@ canvas {
     width: 880px;
     height: 560px;
     background: transparent;
-    background-image: url(/img/old_paper.png);
+    background-image: url(./img/old_paper.png);
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 3;
+    z-index: 4;
     padding: 32px 160px;
     font-size: 32px;
     display: none;
@@ -121,12 +167,12 @@ input[type="checkbox"] {
     height: 32px;
     cursor: pointer;
     outline: none;
-    background-image: url('/img/checkbox.png');
+    background-image: url('./img/checkbox.png');
     background-size: 32px 32px;
 }
 
 input[type="checkbox"]:checked {
-    background-image: url('/img/checkbox_checked.png'); /* Bild für die markierte Checkbox */
+    background-image: url('./img/checkbox_checked.png'); /* Bild für die markierte Checkbox */
 }
 
 .partingLine {
@@ -159,3 +205,136 @@ input[type="checkbox"]:checked {
 .dialog_bottom tr:nth-child(even){
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+#rotate_screen {
+    background-color: black;
+    color: white;
+    font-size: 32px;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 5;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+#mobile_buttons {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
+    padding: 32px;
+    display: none;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#mobile_buttons img {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    height: 64px;
+    transition: all ease-in-out 125ms;
+}
+
+#mobile_buttons img:hover {
+    scale: 0.88;
+    cursor: pointer;
+    border: 4px solid white;
+}
+
+#mobile_buttons_left {
+    display: flex;
+    gap: 16px;
+}
+
+#mobile_buttons_right {
+    display: flex;
+    gap: 16px;
+}
+
+#start_screen {
+    width: 800px;
+    height: 480px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-size: cover;
+    background-position: center;
+}
+
+#lose_screen {
+    width: 720px;
+    height: 480px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background: url(./img/9_intro_outro_screens/game_over/you\ lost.png);
+    background-size: cover;
+    background-position: center;
+    display: none;
+}
+
+#win_screen {
+    width: 720px;
+    height: 480px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    /* background: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-size: cover;
+    background-position: center; */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 160px;
+    color: white;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas, #start_screen, #lose_screen, #win_screen {
+        width: 100vw;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas, #start_screen, #lose_screen, #win_screen {
+        height: 100vh;
+    }
+}
+
+@media(max-width: 720px) {
+    #top {
+        display: none;
+    }
+
+    #bottom {
+        display: none;
+    }
+
+    #rotate_screen {
+        display: flex;
+    }
+
+    #mobile_buttons {
+        display: flex;
+    }
+}
+
+@media screen and (orientation:landscape) { 
+    #rotate_screen {
+        display: none;
+    }
+}
+

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>El Pollo Loco</title>
+    <link rel="icon" type="image/x-icon" href="./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png">
     <link rel="stylesheet" href="./style.css">
     <script src="./js/interval.js"></script>
     <script src="./models/drawable_object.class.js"></script>
@@ -28,22 +29,24 @@
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
 </head>
-<body onload="init()">
+<body>
     <div id="content">
         <div id="top">
             <h1>EL POLLO LOCO</h1>
         </div>
         <canvas id="canvas" width="720" height="480"></canvas>
         <div id="bottom">
-            <button onclick="openDialog()">SETTINGS <img src="./img/settings_icon.png" alt="settings icon"></button>
+            <button id="settings_button" onclick="openDialog()">SETTINGS <img src="./img/settings_icon.png" alt="settings icon"></button>
+            <button id="start_button" onclick="startGame()">START</button>
+            <button id="restart_button" onclick="reloadPage()">RESTART</button>
         </div>
     </div>
-    <div id="dialog_bg" onclick="closeDialog()">
-        <div id="dialog">
+    <div id="dialog_bg" onclick="closeDialog(event)">
+        <div id="dialog" onclick="event.stopPropagation()">
             <div class="dialog_top">
                 <div>
                     <span>FULLSCREEN MODE</span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="screenControl" onchange="toggleFullscreen()">
                 </div>
                 <div>
                     <span>MUTE SOUNDS</span>
@@ -75,6 +78,25 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div id="rotate_screen">
+        <img src="./img/rotate_screen_icon.png" alt="rotate screen icon">
+        <span>rotate screen</span>
+    </div>
+    <div id="mobile_buttons">
+        <div id="mobile_buttons_left">
+            <img src="./img/arrow_left_icon.png" alt="arrow icon left" id="arrow_left_mobile">
+            <img src="./img/arrow_right_icon.png" alt="arrow icon right" id="arrow_right_mobile">
+        </div>
+        <div id="mobile_buttons_right">
+            <img src="./img/arrow_down_icon.png" alt="arrow icon down" id="arrow_down_mobile">
+            <img src="./img/arrow_up_icon.png" alt="arrow icon up" id="arrow_up_mobile">    
+        </div>
+    </div>
+    <div id="start_screen"></div>
+    <div id="lose_screen"></div>
+    <div id="win_screen">
+        <span>YOU<br>WIN!</span>
     </div>
 </body>
 </html>

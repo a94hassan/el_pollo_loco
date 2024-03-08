@@ -7,4 +7,5 @@ function setStoppableInterval(fn, time) {
 
 function stopGame() {
     intervalIds.forEach(clearInterval);
+    toggleSound();
 }
