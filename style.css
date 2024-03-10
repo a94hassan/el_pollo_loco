@@ -213,7 +213,7 @@ input[type="checkbox"]:checked {
     width: 100%;
     height: 100vh;
     position: absolute;
-    z-index: 5;
+    z-index: 7;
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -226,7 +226,6 @@ input[type="checkbox"]:checked {
     height: 100vh;
     width: 100vw;
     position: absolute;
-    z-index: 2;
     padding: 32px;
     display: none;
     justify-content: space-between;
@@ -238,6 +237,8 @@ input[type="checkbox"]:checked {
     border-radius: 50%;
     height: 64px;
     transition: all ease-in-out 125ms;
+    position: relative;
+    z-index: 2;
 }
 
 #mobile_buttons img:hover {
@@ -257,7 +258,7 @@ input[type="checkbox"]:checked {
 }
 
 #start_screen {
-    width: 800px;
+    width: 720px;
     height: 480px;
     position: absolute;
     left: 50%;
@@ -291,9 +292,6 @@ input[type="checkbox"]:checked {
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
-    /* background: url(./img/9_intro_outro_screens/start/startscreen_1.png);
-    background-size: cover;
-    background-position: center; */
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
     justify-content: center;
@@ -302,24 +300,25 @@ input[type="checkbox"]:checked {
     color: white;
 }
 
-@media only screen and (max-width: 720px) {
-    canvas, #start_screen, #lose_screen, #win_screen {
-        width: 100vw;
-    }
-}
-
-@media only screen and (max-height: 480px) {
-    canvas, #start_screen, #lose_screen, #win_screen {
-        height: 100vh;
-    }
-}
 
 @media(max-width: 720px) {
+    canvas {
+        width: 100vw;
+    }
+
     #top {
         display: none;
     }
 
     #bottom {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 6;
+    }
+
+    #settings_button {
         display: none;
     }
 
@@ -330,10 +329,42 @@ input[type="checkbox"]:checked {
     #mobile_buttons {
         display: flex;
     }
+
+    #start_screen, #lose_screen, #win_screen {
+        width: 100vw;
+    }
 }
 
-@media screen and (orientation:landscape) { 
+
+@media(max-height: 480px) {
+    canvas, #start_screen, #lose_screen, #win_screen {
+        height: 100vh;
+    }
+}
+
+
+@media screen and (orientation:landscape) and (max-width: 932px) { 
     #rotate_screen {
+        display: none;
+    }
+
+    #mobile_buttons {
+        display: flex;
+    }
+
+    #top {
+        display: none;
+    }
+
+    #bottom {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 6;
+    }
+
+    #settings_button {
         display: none;
     }
 }

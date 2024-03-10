@@ -115,11 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function setupTouchEvent(element, actionStart, actionEnd) {
-    element.addEventListener('touchstart', () => {
+    element.addEventListener('touchstart', (e) => {
+        e.preventDefault();
         actionStart();
     });
 
-    element.addEventListener('touchend', () => {
+    element.addEventListener('touchend', (e) => {
+        e.preventDefault();
         actionEnd();
     });
 }
@@ -127,7 +129,10 @@ function setupTouchEvent(element, actionStart, actionEnd) {
 function startGame() {
     document.getElementById('start_screen').style.display = 'none';
     document.getElementById('start_button').style.display = 'none';
-    document.getElementById('settings_button').style.display = 'flex';
+    if (window.innerWidth > 932) {
+        document.getElementById('settings_button').style.display = 'flex';
+    }
+    initLevel();
     init(); 
 }
 

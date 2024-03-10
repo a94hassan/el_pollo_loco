@@ -40,6 +40,11 @@
             <button id="start_button" onclick="startGame()">START</button>
             <button id="restart_button" onclick="reloadPage()">RESTART</button>
         </div>
+        <div id="start_screen"></div>
+        <div id="lose_screen"></div>
+        <div id="win_screen">
+            <span>YOU<br>WIN!</span>
+        </div>
     </div>
     <div id="dialog_bg" onclick="closeDialog(event)">
         <div id="dialog" onclick="event.stopPropagation()">
@@ -92,11 +97,6 @@
             <img src="./img/arrow_down_icon.png" alt="arrow icon down" id="arrow_down_mobile">
             <img src="./img/arrow_up_icon.png" alt="arrow icon up" id="arrow_up_mobile">    
         </div>
-    </div>
-    <div id="start_screen"></div>
-    <div id="lose_screen"></div>
-    <div id="win_screen">
-        <span>YOU<br>WIN!</span>
     </div>
 </body>
 </html>

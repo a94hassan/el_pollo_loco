@@ -119,7 +119,7 @@ class Character extends MovableObject {
                 } else if (this.isHurt()) {
                     this.playAnimation(this.hurtImages);
                     this.walkingSound.pause();
-                    // this.hurtVocal.play();
+                    this.hurtVocal.play();
                     newAnimationIndex = 4; 
                 }
             }

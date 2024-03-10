@@ -49,18 +49,14 @@ class World {
             this.throwableObjects.push(bottle);
             this.collectedBottles--;
             this.bottleBar.setAmount(this.collectedBottles);
-            console.log(this.collectedBottles);
-            console.log(this.throwableObjects);
         }
     }
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy) && !enemy.isDead()) {
-                console.log(`Collision with Character - Remaining energy:  ${this.character.energy}`);
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
-                console.log(this.character.energy);
                 if (this.character.x > 300 && this.character.x + this.character.width - this.character.offset.right > enemy.x + enemy.offset.left && this.character.x + this.character.width - this.character.offset.right < enemy.x + enemy.width - enemy.offset.right) {
                     this.character.knockback('left');
                 } else if (this.character.x < this.level.levelEndX - 200 && this.character.x + this.character.offset.left < enemy.x + enemy.width - enemy.offset.right && this.character.x + this.character.offset.left > enemy.x + enemy.offset.left) {
@@ -89,7 +85,6 @@ class World {
                     if (enemy instanceof Endboss) {
                         this.statusBarEndboss.setPercentage(enemy.energy);
                         enemy.isHurt = true;
-                        console.log(enemy.energy);
                     }
                 } else if (bottle.hitGround()) {
                     setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
@@ -104,7 +99,6 @@ class World {
                 this.collectedBottles++;
                 this.level.bottles.splice(i, 1);
                 this.bottleBar.setAmount(this.collectedBottles);
-                console.log(this.collectedBottles);
             }
         })
     }
