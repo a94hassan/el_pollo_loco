@@ -47,6 +47,22 @@ function closeDialog(event) {
     }
 }
 
+function updateDialogToPrivacyPolicy() {
+    document.getElementById('dialog').style.display = 'none';
+    document.getElementById('dialog_privacy_policy').style.display = 'flex';
+}
+
+function updateDialogToLegalNotice() {
+    document.getElementById('dialog').style.display = 'none';
+    document.getElementById('dialog_legal_notice').style.display = 'flex';
+}
+
+function resetDialog() {
+    document.getElementById('dialog_privacy_policy').style.display = 'none';
+    document.getElementById('dialog_legal_notice').style.display = 'none';
+    document.getElementById('dialog').style.display = 'flex';
+}
+
 function toggleSound() {
     let soundControl = document.getElementById('soundControl');
     if (soundControl.checked) {
@@ -120,12 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function setupTouchEvent(element, actionStart, actionEnd) {
     element.addEventListener('touchstart', (e) => {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         actionStart();
     });
 
     element.addEventListener('touchend', (e) => {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         actionEnd();
     });
 }
@@ -143,4 +159,3 @@ function startGame() {
 function reloadPage() {
     location.reload();
 }
-

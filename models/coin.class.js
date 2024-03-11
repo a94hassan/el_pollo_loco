@@ -1,4 +1,4 @@
-class Coin extends CollectableObject {
+class Coin extends MovableObject {
     x = 360 + Math.random() * 3000;
     y = 100 + Math.random() * 150;
     width = 150;

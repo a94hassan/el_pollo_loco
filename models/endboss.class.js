@@ -5,6 +5,8 @@ class Endboss extends MovableObject {
     height = 400;
     speed = 10;
     energy = 1000;
+    currentAnimationIndex = - 1;
+    newAnimationIndex = - 1;
     firstEncounter = false;
     isHurt = false;
     isWalking = false;
@@ -66,58 +68,87 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        let currentAnimationIndex = - 1;
-        let startIntervalId = setInterval(() => {
-            if (!this.firstEncounter) {
-                this.playAnimation(this.alertImages);
-            } else {
-                clearInterval(startIntervalId);
-            }    
-        }, 400);
+        let startIntervalId = setInterval(() => this.alertAnimation(startIntervalId), 400);
         intervalIds.push(startIntervalId);
-
-        setStoppableInterval(() => {
-            if (this.firstEncounter) {
-                if (!this.otherDirection && !this.isAttacking && !this.isHurt && !this.isDead()) {
-                    this.moveLeft();
-                } else if (this.otherDirection && !this.isAttacking && !this.isHurt && !this.isDead()) {
-                    this.moveRight();
-                }
-            }
-        }, 1000 / 60);
-
+        setStoppableInterval(() => this.moveEndboss(), 1000 / 60);
         let animationIntervalId = setInterval(() => {
-            let newAnimationIndex = - 1;
-            if (this.firstEncounter) {
-                if (this.isWalking && !this.isHurt && !this.isDead()) {
-                    this.playAnimation(this.walkImages);
-                    newAnimationIndex = 0; 
-                } else if (this.isAttacking && !this.isHurt && !this.isDead()) {
-                    this.playAnimation(this.attackImages);
-                    newAnimationIndex = 1; 
-                } else if (this.isHurt && !this.isDead()) {
-                    this.playAnimation(this.hurtImages);
-                    setTimeout(() => {this.isHurt = false;}, 1000);
-                    newAnimationIndex = 2; 
-                } else if (this.isDead()) {
-                    this.playAnimation(this.deadImages);
-                    setTimeout(() => {
-                        stopGame();
-                        document.getElementById('win_screen').style.display = 'flex';
-                        document.getElementById('restart_button').style.display = 'unset';
-                        document.getElementById('settings_button').style.display = 'none';
-                        this.winSound.play()
-                    }, 1200);
-                    newAnimationIndex = 3; 
-                }
-            }
-            if (newAnimationIndex !== currentAnimationIndex) {
-                this.currentImage = 0;
-                currentAnimationIndex = newAnimationIndex;
-            }     
+            this.playEndboss();
         }, 200);
         intervalIds.push(animationIntervalId);
     }
+
+    alertAnimation(startIntervalId) {
+        if (!this.firstEncounter) {
+            this.playAnimation(this.alertImages);
+        } else {
+            clearInterval(startIntervalId);
+        } 
+    }
+
+    moveEndboss() {
+        if (this.firstEncounter) {
+            if (this.canMoveLeft()) this.moveLeft();
+            else if (this.canMoveRight()) this.moveRight();
+        }
+    }
+
+    canMoveLeft() {
+        return !this.otherDirection && !this.isAttacking && !this.isHurt && !this.isDead();
+    }
+
+    canMoveRight() {
+        return this.otherDirection && !this.isAttacking && !this.isHurt && !this.isDead()
+    }
+
+    playEndboss() {
+        if (this.firstEncounter) {
+            if (this.canWalk()) this.walkAnimation();
+            else if (this.canAttack()) this.attackAnimation();
+            else if (this.isHurt && !this.isDead()) this.hurtAnimation();
+            else if (this.isDead()) this.endGame();
+        }
+        if (this.newAnimationIndex !== this.currentAnimationIndex) {
+            this.currentImage = 0;
+            this.currentAnimationIndex = this.newAnimationIndex;
+        }     
+    }
+
+    canWalk() {
+        return this.isWalking && !this.isHurt && !this.isDead();
+    }
+
+    walkAnimation() {
+        this.playAnimation(this.walkImages);
+        this.newAnimationIndex = 0; 
+    }
+
+    canAttack() {
+        return this.isAttacking && !this.isHurt && !this.isDead()
+    }
+
+    attackAnimation() {
+        this.playAnimation(this.attackImages);
+        this.newAnimationIndex = 1; 
+    }
+
+    hurtAnimation() {
+        this.playAnimation(this.hurtImages);
+        setTimeout(() => {this.isHurt = false;}, 1000);
+        this.newAnimationIndex = 2; 
+    }
+
+    endGame() {
+        this.playAnimation(this.deadImages);
+        setTimeout(() => {
+            stopGame();
+            document.getElementById('win_screen').style.display = 'flex';
+            document.getElementById('restart_button').style.display = 'unset';
+            document.getElementById('settings_button').style.display = 'none';
+            this.winSound.play();
+        }, 1200);
+        this.newAnimationIndex = 3; 
+    }
+
 
     toggleStatus() {
         if (this.isWalking && this.firstEncounter) {

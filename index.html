@@ -9,7 +9,6 @@
     <script src="./js/interval.js"></script>
     <script src="./models/drawable_object.class.js"></script>
     <script src="./models/movable_object.class.js"></script>
-    <script src="./models/collectable_object.class.js"></script>
     <script src="./models/bottle.class.js"></script>
     <script src="./models/coin.class.js"></script>
     <script src="./models/character.class.js"></script>
@@ -59,7 +58,7 @@
                 </div>
             </div>
             <div class="partingLine"></div>
-            <div class="dialog_bottom">
+            <div class="dialog_center">
                 <table>
                     <th>
                         KEYBINDS
@@ -82,6 +81,41 @@
                     </tr>
                 </table>
             </div>
+            <div class="partingLine"></div>
+            <div class="dialog_bottom">
+                <span onclick="updateDialogToPrivacyPolicy()">PRIVACY POLICY</span>
+                <span onclick="updateDialogToLegalNotice()">LEGAL NOTICE</span>
+            </div>
+        </div>
+        <div id="dialog_privacy_policy" onclick="event.stopPropagation()">
+            <div class="privacy_policy">
+                <img src="./img/left_arrow_icon.png" alt="left arrow icon" class="left_arrow_dialog" onclick="resetDialog()">
+                <h4>PRIVACY POLICY</h4>
+                <div class="partingLine2"></div>
+                    <p>This Privacy Policy informs you about how <a href="#">Max Mustermann</a> uses your personal data when you visit our website or use our services.</p>
+                    <h5>Personal data collection:</h5>
+                    <p>We don't collect data when you visit our website or use our services.</p>
+                    <h5>Contact information for privacy inquiries:</h5>
+                    <p>If you have any questions regarding the Privacy Policy, you can contact us at <a href="mailto:m.mustermann@da.com">m.mustermann@da.com</a>.</p>
+            </div>
+        </div>
+        <div id="dialog_legal_notice" onclick="event.stopPropagation()">
+            <div class="legal_notice">
+                <img src="./img/left_arrow_icon.png" alt="left arrow icon" class="left_arrow_dialog" onclick="resetDialog()">
+                <h4>LEGAL NOTICE</h4>
+                <div class="partingLine2"></div>
+                    <h5>Name and address of the website operator:</h5>
+                    <p>
+                        <a href="#">Max Mustermann</a><br>
+                        Musterstraße 1<br>
+                        12345 Musterstadt
+                    </p>
+                    <h5>Contact details:</h5>
+                    <p>
+                        Email: <a href="mailto:m.mustermann@da.com">m.mustermann@da.com</a><br>
+                        Phone: <a href="tel:0123456789">0123456789</a>
+                    </p>             
+            </div>
         </div>
     </div>
     <div id="rotate_screen">
@@ -94,7 +128,7 @@
             <img src="./img/arrow_right_icon.png" alt="arrow icon right" id="arrow_right_mobile">
         </div>
         <div id="mobile_buttons_right">
-            <img src="./img/arrow_down_icon.png" alt="arrow icon down" id="arrow_down_mobile">
+            <img src="./img/salsa_bottle_mobile.png" alt="arrow icon down" id="arrow_down_mobile">
             <img src="./img/arrow_up_icon.png" alt="arrow icon up" id="arrow_up_mobile">    
         </div>
     </div>

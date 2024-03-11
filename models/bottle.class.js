@@ -1,4 +1,4 @@
-class Bottle extends CollectableObject {
+class Bottle extends MovableObject {
     x = 360 + Math.random() * 3000;
     y = 350;
     width = 100;
