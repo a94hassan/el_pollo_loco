@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: throwable_object.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: throwable_object.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a throwable object that extends MovableObject.
+ * @extends MovableObject
+ */
+class ThrowableObject extends MovableObject {
+    /**
+     * Indicates if the object has hit an enemy.
+     * @type {boolean}
+     * @default false
+     */
+    hitEnemy = false;
+
+    /**
+     * The world object where the throwable object exists.
+     * @type {Object}
+     */
+    world;
+
+    /**
+     * Array of image paths representing bottle rotation animation.
+     * @type {string[]}
+     */
+    bottleRotationImages = [
+        './img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
+    ];
+
+    /**
+     * Array of image paths representing bottle splash animation.
+     * @type {string[]}
+     */
+    bottleSplashImages = [
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
+    ];
+
+    /**
+     * Constructs a new ThrowableObject.
+     * @param {number} x - The initial X position of the object.
+     * @param {number} y - The initial Y position of the object.
+     * @param {Object} world - The world object where the throwable object exists.
+     */
+    constructor(x, y, world) {
+        super().loadImage('./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
+        this.loadImages(this.bottleRotationImages);
+        this.loadImages(this.bottleSplashImages);
+        this.x = x;
+        this.y = y;
+        this.width = 100;
+        this.height = 100;
+        this.world = world;
+        this.throw();
+        this.animateRotation();
+    }
+
+    /**
+     * Throws the throwable object.
+     */
+    throw() {
+        this.speedY = 25;
+        this.applyGravity();
+        let isOtherDirection = this.world.character.otherDirection;
+        let xGrowthIntervalId = setInterval(() => {
+            this.xGrowthDirectionUpdate(isOtherDirection);
+            if (this.hitGround() || this.hitEnemy) {
+                this.speedY = 0;
+                this.acceleration = 0;
+                clearInterval(xGrowthIntervalId);
+            }
+        }, 25);
+        intervalIds.push(xGrowthIntervalId);
+    }
+
+    /**
+     * Animates the rotation of the throwable object.
+     */
+    animateRotation() {
+        let bottleAnimationIntervalId = setInterval(() => {
+            if (this.hitGround() || this.hitEnemy) {
+                this.animateSplash();
+                clearInterval(bottleAnimationIntervalId);
+            } else {
+                this.playAnimation(this.bottleRotationImages);
+            }
+        }, 100);
+        intervalIds.push(bottleAnimationIntervalId);
+    }
+
+    /**
+     * Animates the splash effect of the throwable object.
+     */
+    animateSplash() {
+        let splashIntervalId = setInterval(() => {
+                this.playAnimation(this.bottleSplashImages);
+        }, 100);
+        setTimeout(() => {clearInterval(splashIntervalId);}, 300);
+    }
+
+    /**
+     * Checks if the throwable object has hit the ground.
+     * @returns {boolean} True if the object has hit the ground, false otherwise.
+     */
+    hitGround() {
+        return this.y > 350;
+    }
+
+    /**
+     * Updates the X position of the throwable object based on the character's direction.
+     * @param {boolean} isOtherDirection - Indicates if the character is facing the other direction.
+     */
+    xGrowthDirectionUpdate(isOtherDirection) {
+        if (isOtherDirection === false) {
+            return this.x += 10;
+        } else if (isOtherDirection === true) {
+            return this.x -= 10;
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleBar.html">BottleBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinBar.html">CoinBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="StatusBarEndboss.html">StatusBarEndboss</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Mar 11 2024 20:09:32 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

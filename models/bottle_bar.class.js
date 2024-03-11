@@ -1,4 +1,11 @@
+/**
+ * Represents a bottle bar status indicator in the game, extending from the DrawableObject class.
+ */
 class BottleBar extends DrawableObject {
+    /**
+     * Array containing paths to images representing different levels of the bottle bar.
+     * @type {string[]}
+     */
     barImages = [
         './img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/0.png',
         './img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/20.png',
@@ -8,8 +15,15 @@ class BottleBar extends DrawableObject {
         './img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png'
     ];
 
+    /**
+     * The current amount of the bottle bar.
+     * @type {number}
+     */
     amount = 0;
 
+    /**
+     * Constructs a new BottleBar instance.
+     */
     constructor() {
         super();
         this.loadImages(this.barImages);
@@ -20,12 +34,21 @@ class BottleBar extends DrawableObject {
         this.setAmount(0);
     }
 
+    /**
+     * Sets the amount of the bottle bar and updates the displayed image accordingly.
+     * @param {number} amount - The amount to set for the bottle bar.
+     * @returns {void}
+     */
     setAmount(amount) {
         this.amount = amount;
         let path = this.barImages[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Resolves the index of the image based on the current amount of the bottle bar.
+     * @returns {number} The index of the image in the barImages array.
+     */
     resolveImageIndex() {
         if (this.amount == 5) {
             return 5;

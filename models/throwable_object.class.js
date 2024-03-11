@@ -1,14 +1,36 @@
+/**
+ * Represents a throwable object that extends MovableObject.
+ * @extends MovableObject
+ */
 class ThrowableObject extends MovableObject {
-hitEnemy = false;
-world;
+    /**
+     * Indicates if the object has hit an enemy.
+     * @type {boolean}
+     * @default false
+     */
+    hitEnemy = false;
 
+    /**
+     * The world object where the throwable object exists.
+     * @type {Object}
+     */
+    world;
 
+    /**
+     * Array of image paths representing bottle rotation animation.
+     * @type {string[]}
+     */
     bottleRotationImages = [
         './img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         './img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
         './img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
         './img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
     ];
+
+    /**
+     * Array of image paths representing bottle splash animation.
+     * @type {string[]}
+     */
     bottleSplashImages = [
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
@@ -18,6 +40,12 @@ world;
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
+    /**
+     * Constructs a new ThrowableObject.
+     * @param {number} x - The initial X position of the object.
+     * @param {number} y - The initial Y position of the object.
+     * @param {Object} world - The world object where the throwable object exists.
+     */
     constructor(x, y, world) {
         super().loadImage('./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.loadImages(this.bottleRotationImages);
@@ -31,6 +59,9 @@ world;
         this.animateRotation();
     }
 
+    /**
+     * Throws the throwable object.
+     */
     throw() {
         this.speedY = 25;
         this.applyGravity();
@@ -46,6 +77,9 @@ world;
         intervalIds.push(xGrowthIntervalId);
     }
 
+    /**
+     * Animates the rotation of the throwable object.
+     */
     animateRotation() {
         let bottleAnimationIntervalId = setInterval(() => {
             if (this.hitGround() || this.hitEnemy) {
@@ -58,6 +92,9 @@ world;
         intervalIds.push(bottleAnimationIntervalId);
     }
 
+    /**
+     * Animates the splash effect of the throwable object.
+     */
     animateSplash() {
         let splashIntervalId = setInterval(() => {
                 this.playAnimation(this.bottleSplashImages);
@@ -65,10 +102,18 @@ world;
         setTimeout(() => {clearInterval(splashIntervalId);}, 300);
     }
 
+    /**
+     * Checks if the throwable object has hit the ground.
+     * @returns {boolean} True if the object has hit the ground, false otherwise.
+     */
     hitGround() {
         return this.y > 350;
     }
 
+    /**
+     * Updates the X position of the throwable object based on the character's direction.
+     * @param {boolean} isOtherDirection - Indicates if the character is facing the other direction.
+     */
     xGrowthDirectionUpdate(isOtherDirection) {
         if (isOtherDirection === false) {
             return this.x += 10;
