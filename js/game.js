@@ -51,8 +51,12 @@ function toggleSound() {
     let soundControl = document.getElementById('soundControl');
     if (soundControl.checked) {
         world.muteAllSounds();
+        world.character.loseSound.muted = true;
+        this.level.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = true;}});
     } else {
         world.unmuteAllSounds();
+        world.character.loseSound.muted = false;
+        this.level.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = false;}});
     }
 }
 

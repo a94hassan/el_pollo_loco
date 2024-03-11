@@ -9,6 +9,8 @@ class Endboss extends MovableObject {
     isHurt = false;
     isWalking = false;
     isAttacking = false;
+    endbossAttackingSound = new Audio('./audio/endboss_attacking.mp3')
+    winSound = new Audio('./audio/win.mp3');
 
     alertImages = [
         './img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -60,7 +62,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.hurtImages);
         this.loadImages(this.deadImages);
         this.animate();
-        setInterval(() => {this.toggleStatus();}, 2000);
+        setStoppableInterval(() => {this.toggleStatus();}, 2000);
     }
 
     animate() {
@@ -104,6 +106,7 @@ class Endboss extends MovableObject {
                         document.getElementById('win_screen').style.display = 'flex';
                         document.getElementById('restart_button').style.display = 'unset';
                         document.getElementById('settings_button').style.display = 'none';
+                        this.winSound.play()
                     }, 1200);
                     newAnimationIndex = 3; 
                 }
@@ -117,9 +120,10 @@ class Endboss extends MovableObject {
     }
 
     toggleStatus() {
-        if (this.isWalking) {
+        if (this.isWalking && this.firstEncounter) {
             this.isWalking = false;
             this.isAttacking = true;
+            setTimeout(() => {this.endbossAttackingSound.play();}, 1000);
         } else {
             this.isWalking = true;
             this.isAttacking = false;

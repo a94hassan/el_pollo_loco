@@ -25,7 +25,7 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y < 135;
+            return this.y + this.height < 435;
         }
     }
 
@@ -36,8 +36,8 @@ class MovableObject extends DrawableObject {
                 this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-    isStomping(mo, prevY) {
-        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top && this.y > prevY; 
+    isStomping(mo) {
+        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top && this.speedY < 0; 
         let horizontalOverlap = this.x + this.width - this.offset.right > mo.x + mo.offset.left && this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
         return stompingCondition && horizontalOverlap;
     }
