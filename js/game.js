@@ -17,6 +17,12 @@ let world;
 let keyboard = new Keyboard();
 
 /**
+ * Indicates if key is pressed.
+ * @type {boolean}
+ */
+let pressed = false;
+
+/**
  * Initializes the game by setting up the canvas and world.
  */
 function init() {
@@ -35,8 +41,10 @@ window.addEventListener('keydown', (event) => {
         keyboard.RIGHT = true;
     } else if (event.code === 'ArrowUp' || event.code === 'KeyW') {
         keyboard.UP = true;
-    } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
+    } else if ((event.code === 'ArrowDown' || event.code === 'KeyS' && !pressed)) {
         keyboard.DOWN = true;
+        pressed = true;
+        setInterval(() => pressed = false, 200);
     } else if (event.code === 'Space') {
         keyboard.SPACE = true;
     }
@@ -110,13 +118,13 @@ function resetDialog() {
 function toggleSound() {
     let soundControl = document.getElementById('soundControl');
     if (soundControl.checked) {
-        world.muteAllSounds();
+        world.muteAllSounds(true);
         world.character.loseSound.muted = true;
-        this.level.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = true;}});
+        level1.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = true;}});
     } else {
-        world.unmuteAllSounds();
+        world.muteAllSounds(false);
         world.character.loseSound.muted = false;
-        this.level.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = false;}});
+        level1.enemies.forEach(enemy => {if (enemy instanceof Endboss) {enemy.winSound.muted = false;}});
     }
 }
 

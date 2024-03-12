@@ -76,6 +76,12 @@ class World {
     firstEncounter = false;
 
     /**
+     * Indicates if bottle is thrown.
+     * @type {boolean}
+     */
+    thrown = false;
+
+    /**
      * The number of collected bottles.
      * @type {number}
      */
@@ -176,7 +182,6 @@ class World {
         setStoppableInterval(() => {
             this.xLimiter();
             this.checkCollisions();
-            this.checkThrowObjects();
             this.checkHitting();
             this.checkStomping();
             this.checkFirstEncounter();
@@ -184,13 +189,18 @@ class World {
             this.checkBottleCollecting();
             this.checkCoinCollecting();
         }, 200);
+        setStoppableInterval(() => {
+            this.checkStomping();
+            this.checkThrowObjects();
+        }, 1000 / 60);
     }
 
     /**
      * Checks if the character should throw objects.
      */
     checkThrowObjects() {
-        if (this.keyboard.DOWN && this.collectedBottles > 0) {
+        if (this.keyboard.DOWN && this.collectedBottles > 0 && !this.thrown) {
+            this.thrown = true;
             let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100, this);
             this.throwSound.play();
             this.throwableObjects.push(bottle);
@@ -256,7 +266,10 @@ class World {
                     this.bottleHit(bottle, i, enemy);
                 } else if (bottle.hitGround()) {
                     this.bottleSplashSound.play();
-                    setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
+                    setTimeout(() => {
+                        this.throwableObjects.splice(i, 1);
+                         setTimeout(() => this.thrown = false, 200);
+                    }, 200);
                 }
             });
         });
@@ -272,7 +285,10 @@ class World {
         bottle.hitEnemy = true;
         enemy.energy -= 100;
         this.bottleSplashSound.play();
-        setTimeout(() => {this.throwableObjects.splice(i, 1);}, 200);
+        setTimeout(() => {
+            this.throwableObjects.splice(i, 1);
+            setTimeout(() => this.thrown = false, 200);
+        }, 200);
         if (enemy instanceof Endboss) {
             this.statusBarEndboss.setPercentage(enemy.energy);
             enemy.isHurt = true;
@@ -330,7 +346,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (enemy.firstEncounter) {
                 if (enemy instanceof Endboss) {
-                    if (enemy.x < this.character.x + this.character.width - this.character.offset.right) {
+                    if (enemy.x + enemy.offset.left < this.character.x + this.character.width - this.character.offset.right) {
                         enemy.otherDirection = true;
                     } else if (enemy.x > Math.abs(this.cameraX) + 720) {
                         enemy.otherDirection = false;
@@ -444,59 +460,31 @@ class World {
     }
 
     /**
-     * Mutes all sound effects in the game.
+     * Mutes or unmutes all sounds.
+     * @param {boolean} status - The status to set the muting to.
      */
-    muteAllSounds() {
-        this.character.snoringSound.muted = true;
-        this.character.walkingSound.muted = true;
-        this.character.jumpSound.muted = true;
-        this.character.jumpVocal.muted = true;
-        this.character.stompSound.muted = true;
-        this.character.hurtVocal.muted = true;
-        this.character.deadVocal.muted = true;
-        this.startSound.muted = true;
-        this.shockSound.muted = true;
-        this.throwSound.muted = true;
-        this.bottleSplashSound.muted = true;
-        this.bottleSound.muted = true;
-        this.coinSound.muted = true;
-        this.smallChickenSound.muted = true;
-        this.chickenSound.muted = true;
-        this.endbossSound.muted = true;
-        this.endbossHurtSound.muted = true;
+    muteAllSounds(status) {
+        this.character.snoringSound.muted = status;
+        this.character.walkingSound.muted = status;
+        this.character.jumpSound.muted = status;
+        this.character.jumpVocal.muted = status;
+        this.character.stompSound.muted = status;
+        this.character.hurtVocal.muted = status;
+        this.character.deadVocal.muted = status;
+        this.startSound.muted = status;
+        this.shockSound.muted = status;
+        this.throwSound.muted = status;
+        this.bottleSplashSound.muted = status;
+        this.bottleSound.muted = status;
+        this.coinSound.muted = status;
+        this.smallChickenSound.muted = status;
+        this.chickenSound.muted = status;
+        this.endbossSound.muted = status;
+        this.endbossHurtSound.muted = status;
         this.level.enemies.forEach(enemy => {
             if (enemy instanceof Endboss) {
-                enemy.endbossAttackingSound.muted = true;
-            }
-        })
-    }
-    
-    /**
-     * Unmutes all sound effects in the game.
-     */
-    unmuteAllSounds() {
-        this.character.loseSound.muted = false;
-        this.character.snoringSound.muted = false;
-        this.character.walkingSound.muted = false;
-        this.character.jumpSound.muted = false;
-        this.character.jumpVocal.muted = false;
-        this.character.stompSound.muted = false;
-        this.character.hurtVocal.muted = false;
-        this.character.deadVocal.muted = false;
-        this.startSound.muted = false;
-        this.shockSound.muted = false;
-        this.throwSound.muted = false;
-        this.bottleSplashSound.muted = false;
-        this.bottleSound.muted = false;
-        this.coinSound.muted = false;
-        this.smallChickenSound.muted = false;
-        this.chickenSound.muted = false;
-        this.endbossSound.muted = false;
-        this.endbossHurtSound.muted = false;
-        this.level.enemies.forEach(enemy => {
-            if (enemy instanceof Endboss) {
-                enemy.endbossAttackingSound.muted = false;
-                enemy.winSound.muted = false;
+                enemy.endbossAttackingSound.muted = status;
+                enemy.winSound.muted = status;
             }
         })
     }

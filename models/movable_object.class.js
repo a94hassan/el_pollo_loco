@@ -103,7 +103,7 @@ class MovableObject extends DrawableObject {
      * @returns {boolean} True if the object is stomping on the other object, false otherwise.
      */
     isStomping(mo) {
-        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top && this.speedY < 0; 
+        let stompingCondition = this.y + this.offset.top < mo.y + mo.offset.top && this.y + this.height > mo.y + mo.offset.top && this.speedY < 0 && this.isAboveGround(); 
         let horizontalOverlap = this.x + this.width - this.offset.right > mo.x + mo.offset.left && this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
         return stompingCondition && horizontalOverlap;
     }

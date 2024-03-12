@@ -17,5 +17,5 @@ function setStoppableInterval(fn, time) {
  */
 function stopGame() {
     intervalIds.forEach(clearInterval);
-    world.muteAllSounds();
+    world.muteAllSounds(true);
 }

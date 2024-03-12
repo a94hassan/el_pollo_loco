@@ -51,6 +51,17 @@ class Endboss extends MovableObject {
     newAnimationIndex = -1;
 
     /**
+     * Offset values for collision detection.
+     * @type {object}
+     */
+    offset = {
+        top: 60,
+        left: 50,
+        right: 50,
+        bottom: 60
+    };
+
+    /**
      * Indicates whether it's the first encounter with the end boss.
      * @type {boolean}
      */

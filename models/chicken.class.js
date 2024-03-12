@@ -39,6 +39,17 @@ class Chicken extends MovableObject {
     i = 0;
 
     /**
+     * Offset values for collision detection.
+     * @type {object}
+     */
+    offset = {
+        top: 10,
+        left: 10,
+        right: 5,
+        bottom: 5
+    };
+
+    /**
      * Array containing paths to images representing walking animation.
      * @type {string[]}
      */

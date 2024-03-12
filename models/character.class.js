@@ -37,10 +37,10 @@ class Character extends MovableObject {
      * @type {object}
      */
     offset = {
-        top: 120,
+        top: 135,
         left: 30,
-        right: 40,
-        bottom: 30
+        right: 45,
+        bottom: 40
     };
 
     /**
@@ -189,7 +189,7 @@ class Character extends MovableObject {
     jumpingImages = [
         // './img/2_character_pepe/3_jump/J-31.png',
         // './img/2_character_pepe/3_jump/J-32.png',
-        './img/2_character_pepe/3_jump/J-33.png',
+        './img/2_character_pepe/3_jump/J-34.png',
         './img/2_character_pepe/3_jump/J-34.png',
         './img/2_character_pepe/3_jump/J-35.png',
         './img/2_character_pepe/3_jump/J-35.png',

@@ -40,6 +40,17 @@ class SmallChicken extends MovableObject {
     i = 0;
 
     /**
+     * Offset values for collision detection.
+     * @type {object}
+     */
+    offset = {
+        top: 15,
+        left: 15,
+        right: 20,
+        bottom: 5
+    };
+
+    /**
      * Array of walking images for the small chicken animation.
      * @type {Array<string>}
      */
