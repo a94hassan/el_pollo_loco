@@ -484,7 +484,6 @@ class World {
         this.level.enemies.forEach(enemy => {
             if (enemy instanceof Endboss) {
                 enemy.endbossAttackingSound.muted = status;
-                enemy.winSound.muted = status;
             }
         })
     }
